@@ -1,0 +1,7 @@
+ read x;
+
+
+if x = 0
+
+        write 5000
+xy3 =kjaf
