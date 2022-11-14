@@ -12,13 +12,14 @@ public class Token {
     public int  numVal;
     public static Map<String, String> reserved = new HashMap<String, String>() {{
         put("if","if");
-        put("then ","then");
+
         put("else","else");
         put("repeat","repeat");
         put("until","until");
         put("end","end");
         put("read","read");
         put("write","write");
+        put("then","then");
     }};
     public static Map<String, String> symbols = new HashMap<String, String>() {{
         put("+","+");
@@ -38,7 +39,9 @@ public class Token {
 
     public Token(String stringVal){
         this.stringVal=stringVal;
+
         if (reserved.containsKey(stringVal)){
+            System.out.println(stringVal);
             this.tokenType=TokenType.RESERVED;
         }
         else if (symbols.containsKey(stringVal)){

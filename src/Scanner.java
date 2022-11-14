@@ -20,11 +20,11 @@ public class Scanner {
    public static File inputFile ;
    //takes array of token and write it to the file in the form of value type pairs
    public static void writeTofile(ArrayList<Token> tokens,File file) throws IOException {
-       String string = "\nTOKEN_Value     TYPE";
+       String string = "\n(TOKEN_Value  ,   TYPE)";
        Files.writeString(Paths.get(file.getAbsolutePath()),string , StandardOpenOption.APPEND);
        for (int k =0;k<tokens.size();k++){
            Token token = Tokens.get(k);
-           Files.writeString(Paths.get(file.getAbsolutePath()),"\n"+token.stringVal+"   "+token.tokenType.name(), StandardOpenOption.APPEND);
+           Files.writeString(Paths.get(file.getAbsolutePath()),"\n"+k+": ("+token.stringVal+" ,  "+token.tokenType.name()+")", StandardOpenOption.APPEND);
        }
 
    }
