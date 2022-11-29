@@ -15,19 +15,20 @@ enum STATE{
 public class Scanner {
 
 
-   public static  Index i = new Index(0);
+    public static  Index i = new Index(0);
     public static ArrayList<Token> Tokens = new ArrayList<>();
-   public static File inputFile ;
+    public static File inputFile ;
+    public static File ouputFile;
    //takes array of token and write it to the file in the form of value type pairs
-   public static void writeTofile(ArrayList<Token> tokens,File file) throws IOException {
-       String string = "\n(TOKEN_Value  ,   TYPE)";
-       Files.writeString(Paths.get(file.getAbsolutePath()),string , StandardOpenOption.APPEND);
+    public static void writeTofile(ArrayList<Token> tokens,File file) throws IOException {
+       String string = "\n : (TOKEN_Value  ,   TYPE)";
+       Files.writeString(Paths.get(file.getAbsolutePath()),string , StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);
        for (int k =0;k<tokens.size();k++){
            Token token = Tokens.get(k);
            Files.writeString(Paths.get(file.getAbsolutePath()),"\n"+k+": ("+token.stringVal+" ,  "+token.tokenType.name()+")", StandardOpenOption.APPEND);
        }
 
-   }
+    }
 public static void  scan(String tiny,Index index,ArrayList<Token> tokens){
 
     Token token =new Token();
@@ -152,13 +153,26 @@ public static void  scan(String tiny,Index index,ArrayList<Token> tokens){
                 jfc.showOpenDialog(null);
 
                 inputFile=jfc.getSelectedFile();
+                System.out.println(inputFile.getParent());
                 String code = ReadFile(inputFile);
                 System.out.println(code);
 
                 scan(code,i,Tokens);
-
+                String path = inputFile.getParent()+"\\Tokens.txt";
+                ouputFile= new File(path);
                 try {
-                    writeTofile(Tokens,inputFile);
+
+                    if (ouputFile.createNewFile()) {
+                        System.out.println("File created: " + ouputFile.getName());
+                    } else {
+                        System.out.println("File already exists.");
+                    }
+                } catch (IOException e) {
+                    System.out.println("An error occurred.");
+                    e.printStackTrace();
+                }
+                try {
+                    writeTofile(Tokens,ouputFile);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
