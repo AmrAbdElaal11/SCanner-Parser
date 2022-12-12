@@ -12,12 +12,12 @@ public class SyntaxTree {
     public  SyntaxTree(){
         //create an object from GraphViz using the dot executable path as well as a temp Dir
         //temp dir contains logging info in case of exceptions
-        graph = new GraphViz("src/main/java/GraphVizLite/dot.exe" , ".");
+        graph = new GraphViz("A:\\1st_Senior2\\Compilers\\Parser project\\src\\GraphVizLite\\dot.exe" , ".");
         graph.addln(graph.start_graph());
         graph.add("edge [dir=none];");
         currentUID = 0;
     }
-    public long addNode(String nodeLabel , Shape nodeShape){
+    private long addNode(String nodeLabel , Shape nodeShape){
         currentUID++;
         String labelString = currentUID + " [label= \"" + nodeLabel + "\"";
         if (nodeShape == Shape.RECTANGLE){
@@ -56,6 +56,9 @@ public class SyntaxTree {
     }
     public long addWriteStmtNode(){
         return addNode("write" , Shape.RECTANGLE);
+    }
+    public long addReadStmtNode(String x){
+        return addNode("read\\n("+x+ ")", Shape.RECTANGLE);
     }
     public void endGraph(){
         graph.addln(graph.end_graph());
