@@ -1,23 +1,23 @@
 import java.util.HashMap;
 import java.util.Map;
 
-enum TokenType{
-    RESERVED,IDENTIFIER,NUMBER,SPECIALSYMBOL,ASSIGN,IF , THEN, ELSE , END , READ , WRITE , UNTIL,REPEAT,
-    SEMICOLON, LESSTHAN,GREATERTHAN, EQUAL, PLUS,MINUS , MULT, DIV ,OPENBRACKET,CLOSEDBRACKET
 
-}
 
 
 
 
 
 public class Token {
+    public  enum TokenType{
+        RESERVED,IDENTIFIER,NUMBER,SPECIALSYMBOL,ASSIGN,IF , THEN, ELSE , END , READ , WRITE , UNTIL,REPEAT,
+        SEMICOLON, LESSTHAN,GREATERTHAN, EQUAL, PLUS,MINUS , MULT, DIV ,OPENBRACKET,CLOSEDBRACKET
 
+    }
     public TokenType tokenType;
     public String stringVal;
     public int  numVal;
     Map<String,Enum<TokenType>> enumMap= new HashMap<String, Enum<TokenType>>();
-    ;
+
     public static Map<String, Enum<TokenType>> reserved = new HashMap<String, Enum<TokenType>>() {{
         put("if",TokenType.IF);
         put("else",TokenType.ELSE);
@@ -43,6 +43,9 @@ public class Token {
     public static String assign=":=";
     public Token(){
 
+    }
+    public TokenType getTokenType(){
+        return this.tokenType;
     }
 
     public Token(String stringVal){

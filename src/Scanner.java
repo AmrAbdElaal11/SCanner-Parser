@@ -19,14 +19,22 @@ public class Scanner {
     public static ArrayList<Token> Tokens = new ArrayList<>();
     public static File inputFile ;
     public static File ouputFile;
-
-
+    public Scanner(){}
+    public Scanner(String code){
+        getTokens(code);
+    }
    //takes array of token and write it to the file in the form of value type pairs
     public static void writeTofile(Token token,File file,int k) throws IOException {
        String string = "\n : [TOKEN_Value  ,   TYPE]";
        if(k==0)
        Files.writeString(Paths.get(file.getAbsolutePath()),string , StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING);
        Files.writeString(Paths.get(file.getAbsolutePath()),"\n"+k+": ["+token.stringVal+" ,  "+token.tokenType.name()+"]", StandardOpenOption.APPEND);
+    }
+    public  void getTokens(String code){
+        while(true){
+            Token t = scan(code,i,Tokens);
+            if(t==null) break;
+        }
     }
 public static Token  scan(String tiny,Index index,ArrayList<Token> tokens){
 
@@ -135,7 +143,7 @@ public static Token  scan(String tiny,Index index,ArrayList<Token> tokens){
 
 
 
-
+/*
    public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -188,7 +196,7 @@ public static Token  scan(String tiny,Index index,ArrayList<Token> tokens){
 
 
 
-
+*/
 
     public static String ReadFile(File file){
         StringBuffer input =new StringBuffer();
