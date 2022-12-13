@@ -5,21 +5,25 @@ public class Parser {
 
 
 
-    long program() {
-        return  stmt_sequence();
-
+    void program() {
+        long t=  stmt_sequence();
+        tree.endGraph();
+        tree.writeImageToFile();
     }
 
     long stmt_sequence() {
         long root = statment();
         long stmt;
         long x =root;
+        if (i >= Scanner.Tokens.size()) return  root;
         Token token=Scanner.Tokens.get(i);
         while(Token.TokenType.SEMICOLON==token.getTokenType()){
             match(Token.TokenType.SEMICOLON);
             stmt=statment();
-            token=Scanner.Tokens.get(i);
             tree.addSibiling(x,stmt);
+            if (i >= Scanner.Tokens.size()) return  root;
+            token=Scanner.Tokens.get(i);
+
             x=stmt;
         }
         return root;
@@ -38,7 +42,7 @@ public class Parser {
             case REPEAT:
                 temp= repeat_stmt();
                 break;
-            case ASSIGN:
+            case IDENTIFIER:
                 temp = assign_stmt();
                 break;
             case WRITE:
@@ -52,12 +56,13 @@ public class Parser {
     }
 
     long if_stmt() {
+
         Token token=Scanner.Tokens.get(i);
         match(Token.TokenType.IF);
         long parent =tree.addIfStmtNode();
         long ex=exp();
         tree.addChild(parent,ex);
-        token=Scanner.Tokens.get(i);
+        Token token2=Scanner.Tokens.get(i);
         match(Token.TokenType.THEN);
         long stmt=stmt_sequence();
         tree.addChild(parent, stmt);
@@ -85,6 +90,7 @@ public class Parser {
         long ex = exp();
         tree.addChild(parent,t);
         tree.addChild(parent,ex);
+
         return  parent;
     }
 
@@ -140,6 +146,7 @@ public class Parser {
             t = factor();
             tree.addChild(node, t);
             temp = node;
+            token = Scanner.Tokens.get(i);
         }
         return temp;
     }
@@ -167,20 +174,21 @@ public class Parser {
             t = term();
             tree.addChild(node, t);
             temp = node;
+            token = Scanner.Tokens.get(i);
         }
         return temp;
     }
 
     long exp() {
-        Token token = Scanner.Tokens.get(i);
+        long tttt;
         long temp = simple_exp();
+        Token token = Scanner.Tokens.get(i);
         long parent;
         switch (token.getTokenType()) {
             case LESSTHAN:
                 match(Token.TokenType.LESSTHAN);
                 parent = tree.addOperatorNode("<");
                 tree.addChild(parent, temp);
-
                 break;
             case EQUAL:
                 match(Token.TokenType.EQUAL);
@@ -191,8 +199,8 @@ public class Parser {
                 return temp;
 
         }
-        temp = simple_exp();
-        tree.addChild(parent, temp);
+         tttt = simple_exp();
+        tree.addChild(parent, tttt);
         return parent;
 
 
@@ -214,15 +222,17 @@ public class Parser {
                 break;
             case IDENTIFIER:
                 match(Token.TokenType.IDENTIFIER);
-                child = tree.addConstNode(token.stringVal);
+                child = tree.addIDNode(token.stringVal);
                 break;
         }
         return child;
     }
 
     public void match(Token.TokenType type) {
+
         Token current = Scanner.Tokens.get(i);
         if (current.getTokenType() == type) {
+            if (i+1>= Scanner.Tokens.size()) return;
             i++;
         } else {
             // raise exception

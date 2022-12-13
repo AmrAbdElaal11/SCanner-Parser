@@ -70,6 +70,13 @@ public class Token {
         }
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Token{" +
+                "tokenType=" + tokenType +
+                ", stringVal='" + stringVal + '\'' +
+                ", numVal=" + numVal +
+                ", enumMap=" + enumMap +
+                '}';
+    }
 }

@@ -14,7 +14,8 @@ public class SyntaxTree {
         //temp dir contains logging info in case of exceptions
         graph = new GraphViz("A:\\1st_Senior2\\Compilers\\Parser project\\src\\GraphVizLite\\dot.exe" , ".");
         graph.addln(graph.start_graph());
-        graph.add("edge [dir=none];");
+        graph.addln("edge [dir=none];");
+        graph.addln("graph [ordering= out,dpi=1000];");
         currentUID = 0;
     }
     private long addNode(String nodeLabel , Shape nodeShape){
@@ -34,7 +35,7 @@ public class SyntaxTree {
         graph.addln("{rank = \"same\" " + firstNodeName + "->" + secondNodeName + "};");
     }
     public long addIDNode(String idName){
-        return addNode("id\\n"+idName , Shape.ELLIPSE);
+        return addNode("id\\n("+idName+")" , Shape.ELLIPSE);
     }
     public long addConstNode(String constValue){
         return addNode("const\\n(" + constValue  + ")", Shape.ELLIPSE);
