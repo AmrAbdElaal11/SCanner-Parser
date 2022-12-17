@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="614.0" prefWidth="435.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.compiler_gui.HelloController">
+   <children>
+      <Button fx:id="parseBtn" layoutX="118.0" layoutY="544.0" mnemonicParsing="false" onAction="#onParseButtonClick" prefHeight="30.0" prefWidth="85.0" text="Parse" />
+      <TextArea fx:id="fileTextArea" layoutX="55.0" layoutY="81.0" prefHeight="452.0" prefWidth="326.0" />
+      <Button fx:id="openBtn" layoutY="-1.0" mnemonicParsing="false" onAction="#onOpenButtonClick" text="Open" />
+      <CheckBox fx:id="srcCodeCheckBox" layoutX="230.0" layoutY="549.0" mnemonicParsing="false" text="Source code" />
+   </children>
+</Pane>

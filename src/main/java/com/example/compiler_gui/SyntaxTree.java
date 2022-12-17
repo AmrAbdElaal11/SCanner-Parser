@@ -1,3 +1,4 @@
+package com.example.compiler_gui;
 import java.io.File;
 
 public class SyntaxTree {
@@ -12,7 +13,7 @@ public class SyntaxTree {
     public  SyntaxTree(){
         //create an object from GraphViz using the dot executable path as well as a temp Dir
         //temp dir contains logging info in case of exceptions
-        graph = new GraphViz("A:\\1st_Senior2\\Compilers\\Parser project\\src\\GraphVizLite\\dot.exe" , ".");
+        graph = new GraphViz("E:\\Others\\El koleya el weskha\\Last year\\First Semster-20221101T162429Z-001\\First Semster\\Design of Compilers\\Project\\compiler_gui\\src\\main\\java\\com\\example\\compiler_gui\\GraphVizLite\\dot.exe" , ".");
         graph.addln(graph.start_graph());
         graph.addln("edge [dir=none];");
         graph.addln("graph [ordering= out,dpi=1000];");

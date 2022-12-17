@@ -1,3 +1,4 @@
+package com.example.compiler_gui;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -5,9 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+
 
 enum STATE{
     START,INCOMMENT,INID,INNUM,INASSIGN,DONE
@@ -143,76 +142,11 @@ public static Token  scan(String tiny,Index index,ArrayList<Token> tokens){
 
 
 
-/*
-   public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    UIManager.setLookAndFeel(
-                            UIManager.getSystemLookAndFeelClassName());
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
-                // file chooser to select file from any directory
-                JFileChooser jfc = new JFileChooser();
-                jfc.showOpenDialog(null);
-                inputFile=jfc.getSelectedFile();
-                // read the file content in one line
-                String code = ReadFile(inputFile);
-                System.out.println(code);
-
-                // output file path relative to the input file
-                String path = inputFile.getParent()+"\\Tokens.txt";
-                ouputFile= new File(path);
-                try {
-
-                    if (ouputFile.createNewFile()) {
-                        System.out.println("File created: " + ouputFile.getName());
-                    } else {
-                        System.out.println("File already exists.");
-                    }
-                } catch (IOException e) {
-                    System.out.println("An error occurred.");
-                    e.printStackTrace();
-                }
-                // write tokens to ouput file
-                int k=0;
-                // scan the file for token extraction and write to output file
-                while(true){
-                    Token t = scan(code,i,Tokens);
-                    if(t==null) break;
-                    try {
-                        writeTofile(t,ouputFile,k);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    k++;
-
-                }
-            }
-        });
-}
 
 
 
-*/
+    public void setCode(String code){
+        getTokens(code);
 
-    public static String ReadFile(File file){
-        StringBuffer input =new StringBuffer();
-        
-        try{
-            java.util.Scanner scan = new java.util.Scanner(file);
-            input.append(scan.nextLine());
-
-            while(scan.hasNextLine()){
-                input.append(scan.nextLine());
-                input.append(" ");
-            }
-        }
-        catch(FileNotFoundException ex){
-            System.out.println(ex.getMessage());
-        }
-        return input.toString();
     }
 }

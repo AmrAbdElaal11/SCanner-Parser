@@ -1,3 +1,4 @@
+package com.example.compiler_gui;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,6 +1,6 @@
+package com.example.compiler_gui;
 public class Parser {
     public static SyntaxTree tree = new SyntaxTree();
-    Scanner scanner = new Scanner();
     public static Integer i = 0;
 
 
