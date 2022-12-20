@@ -1,35 +1,54 @@
 package com.example.compiler_gui;
+
+import java.io.IOException;
+
 public class Parser {
-    public static SyntaxTree tree = new SyntaxTree();
+    public static SyntaxTree tree;
+
+    static {
+        try {
+            tree = new SyntaxTree();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public static Integer i = 0;
-
-
-
-    void program() {
+    void program() throws ParsingException, IOException {
+        i = 0;
+        tree.clearGraph();
+//        tree = new SyntaxTree();
         long t=  stmt_sequence();
         tree.endGraph();
         tree.writeImageToFile();
     }
 
-    long stmt_sequence() {
+    long stmt_sequence() throws ParsingException{
         long root = statment();
         long stmt;
         long x =root;
-        if (i >= Scanner.Tokens.size()) return  root;
+        if (i >= Scanner.Tokens.size()) {
+            return root;
+        }
         Token token=Scanner.Tokens.get(i);
-        while(Token.TokenType.SEMICOLON==token.getTokenType()){
+        while(Token.TokenType.SEMICOLON == token.getTokenType()){
             match(Token.TokenType.SEMICOLON);
             stmt=statment();
             tree.addSibiling(x,stmt);
-            if (i >= Scanner.Tokens.size()) return  root;
+            if (i >= Scanner.Tokens.size()) {
+                return root;
+            }
             token=Scanner.Tokens.get(i);
-
             x=stmt;
+        }
+        if (i + 1 < Scanner.Tokens.size() ) {
+            if(token.getTokenType() != Token.TokenType.ELSE && token.getTokenType() != Token.TokenType.UNTIL && token.getTokenType() != Token.TokenType.END){
+                throw new ParsingException("Missing semi-colon");
+            }
         }
         return root;
     }
 
-    long statment() {
+    long statment() throws ParsingException {
         Token token=Scanner.Tokens.get(i);
         long temp = 0;
         switch (token.tokenType){
@@ -49,39 +68,34 @@ public class Parser {
                 temp = write_stmt();
                 break;
             default:
-                // raise error
-
+                throw new ParsingException("Invalid statement");
         }
-        return  temp ;
+        return temp ;
     }
 
-    long if_stmt() {
-
-        Token token=Scanner.Tokens.get(i);
+    long if_stmt() throws ParsingException{
+        Token token = Scanner.Tokens.get(i);
         match(Token.TokenType.IF);
         long parent =tree.addIfStmtNode();
         long ex=exp();
         tree.addChild(parent,ex);
-        Token token2=Scanner.Tokens.get(i);
+        Token token2 = Scanner.Tokens.get(i);
         match(Token.TokenType.THEN);
         long stmt=stmt_sequence();
         tree.addChild(parent, stmt);
-         token=Scanner.Tokens.get(i);
-       if (token.getTokenType()== Token.TokenType.ELSE){
-           match(Token.TokenType.ELSE);
-           long seq = stmt_sequence();
-            token=Scanner.Tokens.get(i);
-          tree.addChild(parent,seq);
-       }
-       else {
-           //raise exception
-       }
-       match(Token.TokenType.END);
-       return parent;
+        token=Scanner.Tokens.get(i);
+        if (token.getTokenType()== Token.TokenType.ELSE) {
+            match(Token.TokenType.ELSE);
+            long seq = stmt_sequence();
+            token = Scanner.Tokens.get(i);
+            tree.addChild(parent,seq);
+        }
+        match(Token.TokenType.END);
+        return parent;
     }
 
-    long repeat_stmt() {
-        Token token=Scanner.Tokens.get(i);
+    long repeat_stmt() throws ParsingException {
+        Token token = Scanner.Tokens.get(i);
         match(Token.TokenType.REPEAT);
         long parent = tree.addRepeatStmtNode();
         long t = stmt_sequence();
@@ -90,11 +104,10 @@ public class Parser {
         long ex = exp();
         tree.addChild(parent,t);
         tree.addChild(parent,ex);
-
         return  parent;
     }
 
-    long assign_stmt() {
+    long assign_stmt() throws ParsingException {
         Token token=Scanner.Tokens.get(i);
         match(Token.TokenType.IDENTIFIER);
         long parent = tree.addAssignStmtNode(token.stringVal);
@@ -105,25 +118,24 @@ public class Parser {
         return parent;
     }
 
-    long write_stmt() {
+    long write_stmt() throws ParsingException {
         Token token=Scanner.Tokens.get(i);
         match(Token.TokenType.WRITE);
-         long temp =tree.addWriteStmtNode();
-         long t = exp();
-         tree.addChild(temp,t);
-         return temp;
+        long temp =tree.addWriteStmtNode();
+        long t = exp();
+        tree.addChild(temp,t);
+        return temp;
     }
 
-    long read_stmt() {
+    long read_stmt() throws ParsingException{
         Token token=Scanner.Tokens.get(i);
         match(Token.TokenType.READ);
         token=Scanner.Tokens.get(i);
         match(Token.TokenType.IDENTIFIER);
         return tree.addReadStmtNode(token.stringVal);
-
     }
 
-    long term() {
+    long term() throws ParsingException{
         long node = 0;
         long temp = factor();
         long t;
@@ -141,7 +153,7 @@ public class Parser {
                     tree.addChild(node, temp);
                     break;
                 default:
-                    // raise error
+                    throw new ParsingException("Invalid arithmetic exception");
             }
             t = factor();
             tree.addChild(node, t);
@@ -151,7 +163,7 @@ public class Parser {
         return temp;
     }
 
-    long simple_exp() {
+    long simple_exp() throws ParsingException{
         long temp = term();
         long node = 0;
         long t;
@@ -169,7 +181,7 @@ public class Parser {
                     tree.addChild(node, temp);
                     break;
                 default:
-                    // raise error
+                    throw new ParsingException("Invalid arithmetic exception");
             }
             t = term();
             tree.addChild(node, t);
@@ -179,7 +191,7 @@ public class Parser {
         return temp;
     }
 
-    long exp() {
+    long exp() throws ParsingException{
         long tttt;
         long temp = simple_exp();
         Token token = Scanner.Tokens.get(i);
@@ -191,23 +203,19 @@ public class Parser {
                 tree.addChild(parent, temp);
                 break;
             case EQUAL:
-                match(Token.TokenType.EQUAL);
+                    match(Token.TokenType.EQUAL);
                 parent = tree.addOperatorNode("=");
                 tree.addChild(parent, temp);
                 break;
             default:
                 return temp;
-
         }
-         tttt = simple_exp();
+        tttt = simple_exp();
         tree.addChild(parent, tttt);
         return parent;
-
-
     }
 
-    long factor() {
-
+    long factor() throws ParsingException{
         long child = 0;
         Token token = Scanner.Tokens.get(i);
         switch (token.getTokenType()) {
@@ -224,19 +232,27 @@ public class Parser {
                 match(Token.TokenType.IDENTIFIER);
                 child = tree.addIDNode(token.stringVal);
                 break;
+            default:
+                throw new ParsingException("Invalid factor");
         }
         return child;
     }
 
-    public void match(Token.TokenType type) {
+    public void match(Token.TokenType type) throws ParsingException {
 
         Token current = Scanner.Tokens.get(i);
         if (current.getTokenType() == type) {
-            if (i+1>= Scanner.Tokens.size()) return;
+            if (i+1 >= Scanner.Tokens.size()) {
+                return;
+            }
             i++;
-        } else {
-            // raise exception
-
+        }else{
+            if(current == null || i == Scanner.Tokens.size() - 1){
+                throw new ParsingException("Error! Expected a \"" + type +"\" ,but found nothing" + " instead.");
+            }
+            else{
+                throw new ParsingException("Error! Expected a \"" + type +"\" ,but found \"" +  current.getTokenType() + "\" instead.");
+            }
         }
     }
 

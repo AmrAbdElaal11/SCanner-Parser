@@ -36,7 +36,6 @@ public class Scanner {
         }
     }
 public static Token  scan(String tiny,Index index,ArrayList<Token> tokens){
-
     Token token =new Token();
     boolean parserToken =false;
     STATE current = STATE.START;
@@ -45,8 +44,7 @@ public static Token  scan(String tiny,Index index,ArrayList<Token> tokens){
 
     for (;index.i<=charsInput.length;(index.i)++){
         String curr="";
-
-        if(index.i< charsInput.length) {
+        if(index.i < charsInput.length) {
 
              curr = String.valueOf(charsInput[index.i]);
         }
@@ -61,7 +59,7 @@ public static Token  scan(String tiny,Index index,ArrayList<Token> tokens){
                 if (curr.matches("\\{")) {
                 current=STATE.INCOMMENT;
             }
-                else if (curr.equals(" ")){
+                else if (curr.equals(" ") || curr.equals("\t")){
                    current=STATE.START;
                 }
                 else if (curr.matches("[0-9]")) {
@@ -140,13 +138,12 @@ public static Token  scan(String tiny,Index index,ArrayList<Token> tokens){
 }
 
 
-
-
-
-
-
+    public static void clearTokens(){
+        i.i = 0;
+        Tokens.clear();
+    }
     public void setCode(String code){
+        clearTokens();
         getTokens(code);
-
     }
 }

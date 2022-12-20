@@ -1,5 +1,6 @@
 package com.example.compiler_gui;
 import java.io.File;
+import java.io.IOException;
 
 public class SyntaxTree {
     private GraphViz graph;
@@ -10,13 +11,13 @@ public class SyntaxTree {
     }
     private final String imageExtension = "png";
     private String outputImageFileName = "out";
-    public  SyntaxTree(){
-        //create an object from GraphViz using the dot executable path as well as a temp Dir
-        //temp dir contains logging info in case of exceptions
-        graph = new GraphViz("E:\\Others\\El koleya el weskha\\Last year\\First Semster-20221101T162429Z-001\\First Semster\\Design of Compilers\\Project\\compiler_gui\\src\\main\\java\\com\\example\\compiler_gui\\GraphVizLite\\dot.exe" , ".");
+    public  SyntaxTree() throws IOException {
+        String currentPath = new java.io.File(".").getCanonicalPath();
+        currentPath += "\\src\\main\\java\\com\\example\\compiler_gui\\GraphVizLite\\dot.exe";
+        graph = new GraphViz(currentPath  , ".");
         graph.addln(graph.start_graph());
         graph.addln("edge [dir=none];");
-        graph.addln("graph [ordering= out,dpi=1000];");
+        graph.addln("graph [ordering= out];");
         currentUID = 0;
     }
     private long addNode(String nodeLabel , Shape nodeShape){
@@ -64,6 +65,13 @@ public class SyntaxTree {
     }
     public void endGraph(){
         graph.addln(graph.end_graph());
+    }
+    public void clearGraph(){
+        graph.clearGraph();
+        currentUID = 0;
+        graph.addln(graph.start_graph());
+        graph.addln("edge [dir=none];");
+        graph.addln("graph [ordering= out];");
     }
     public void writeImageToFile(){
         File out = new File(outputImageFileName + "."+ imageExtension);

@@ -10,8 +10,134 @@ import java.util.Map;
 
 public class Token {
     public  enum TokenType{
-        RESERVED,IDENTIFIER,NUMBER,SPECIALSYMBOL,ASSIGN,IF , THEN, ELSE , END , READ , WRITE , UNTIL,REPEAT,
-        SEMICOLON, LESSTHAN,GREATERTHAN, EQUAL, PLUS,MINUS , MULT, DIV ,OPENBRACKET,CLOSEDBRACKET
+        RESERVED,
+        IDENTIFIER {
+            @Override
+            public String toString() {
+                return "identifier";
+            }
+        },
+        NUMBER{
+            @Override
+            public String toString() {
+                return "number";
+            }
+        },
+        SPECIALSYMBOL,
+        ASSIGN{
+            @Override
+            public String toString() {
+                return ":=";
+            }
+        },
+        IF{
+            @Override
+            public String toString() {
+                return "if";
+            }
+        },
+        THEN{
+            @Override
+            public String toString() {
+                return "then";
+            }
+        },
+        ELSE{
+            @Override
+            public String toString() {
+                return "else";
+            }
+        },
+        END{
+            @Override
+            public String toString() {
+                return "end";
+            }
+        },
+        READ{
+            @Override
+            public String toString() {
+                return "read";
+            }
+        },
+        WRITE{
+            @Override
+            public String toString() {
+                return "write";
+            }
+        },
+        UNTIL{
+            @Override
+            public String toString() {
+                return "until";
+            }
+        },
+        REPEAT{
+            @Override
+            public String toString() {
+                return "repeat";
+            }
+        },
+        SEMICOLON {
+            @Override
+            public String toString() {
+                return "semi-colon";
+            }
+        },
+        LESSTHAN{
+            @Override
+            public String toString() {
+                return "<";
+            }
+        },
+        GREATERTHAN {
+            @Override
+            public String toString() {
+                return ">";
+            }
+        },
+        EQUAL{
+            @Override
+            public String toString() {
+                return "=";
+            }
+        },
+        PLUS{
+            @Override
+            public String toString() {
+                return "+";
+            }
+        },
+        MINUS{
+            @Override
+            public String toString() {
+                return "-";
+            }
+        },
+        MULT{
+            @Override
+            public String toString() {
+                return "*";
+            }
+        },
+        DIV{
+            @Override
+            public String toString() {
+                return "/";
+            }
+        },
+        OPENBRACKET{
+            @Override
+            public String toString() {
+                return "(";
+            }
+        },
+        CLOSEDBRACKET{
+            @Override
+            public String toString() {
+                return ")";
+            }
+        }
 
     }
     public TokenType tokenType;
