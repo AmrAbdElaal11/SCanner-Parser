@@ -55,4 +55,12 @@ public class Util {
             return secondNumber;
         }
     }
+    public static double min(double firstNumber , double secondNumber){
+        if(firstNumber < secondNumber){
+            return firstNumber;
+        }
+        else{
+            return secondNumber;
+        }
+    }
 }

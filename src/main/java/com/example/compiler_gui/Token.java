@@ -179,7 +179,6 @@ public class Token {
         this.stringVal=stringVal;
 
         if (reserved.containsKey(stringVal)){
-           // System.out.println(stringVal);
             this.tokenType= (TokenType) reserved.get(stringVal);
         }
         else if (symbols.containsKey(stringVal)){

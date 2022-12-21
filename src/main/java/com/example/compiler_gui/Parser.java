@@ -68,7 +68,7 @@ public class Parser {
                 temp = write_stmt();
                 break;
             default:
-                throw new ParsingException("Invalid statement");
+                throw new ParsingException("Expected a statement found \"" + token.getTokenType() + "\" instead");
         }
         return temp ;
     }
@@ -203,8 +203,13 @@ public class Parser {
                 tree.addChild(parent, temp);
                 break;
             case EQUAL:
-                    match(Token.TokenType.EQUAL);
+                match(Token.TokenType.EQUAL);
                 parent = tree.addOperatorNode("=");
+                tree.addChild(parent, temp);
+                break;
+            case GREATERTHAN:
+                match(Token.TokenType.GREATERTHAN);
+                parent = tree.addOperatorNode(">");
                 tree.addChild(parent, temp);
                 break;
             default:

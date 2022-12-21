@@ -31,7 +31,7 @@ public class SyntaxTree {
         return currentUID;
     }
     public void addChild(long firstNodeName , long secondNodeName){
-        graph.addln(firstNodeName + "->" + secondNodeName + ";");
+        graph.addln(firstNodeName + "->" + secondNodeName + "[minlen=2];");
     }
     public  void addSibiling(long firstNodeName , long secondNodeName){
         graph.addln("{rank = \"same\" " + firstNodeName + "->" + secondNodeName + "};");

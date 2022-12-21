@@ -4,13 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -40,7 +41,7 @@ public class HelloController implements Initializable{
         File f = fc.showOpenDialog(null);
         if (f!=null){
             fileText = Util.readSrcFile(f);
-            if(fileText.isEmpty()){
+            if(fileText.isEmpty() || fileText.isBlank()){
                 popOutError("Empty File!!");
             }
             else {
@@ -52,7 +53,7 @@ public class HelloController implements Initializable{
     @FXML
     private void onParseButtonClick(ActionEvent event) throws FileNotFoundException {
         fileText = fileTextArea.getText();
-        if(fileText.isEmpty()){
+        if(fileText.isEmpty() || fileText.isBlank()){
             popOutError("Empty input!!");
             return;
         }
@@ -65,7 +66,6 @@ public class HelloController implements Initializable{
         }
         try{
             p.program();
-            //creating the image object
             InputStream stream = new FileInputStream("out.png");
             Image image = new Image(stream);
             //Creating the image view
@@ -73,16 +73,15 @@ public class HelloController implements Initializable{
             //Setting image to the image view
             imageView.setImage(image);
             //Setting the image view parameters
-//            imageView.setX(10);
-//            imageView.setY(10);
-//            imageView.setFitWidth(image.getWidth());
-//            imageView.setFitHeight(image.getHeight());
-            imageView.setPreserveRatio(true);
-            //Setting the Scene object
-            Group root = new Group(imageView);
-            Scene scene = new Scene(root, Util.max(300 , image.getWidth()), Util.max(300 , image.getHeight()));
+            imageView.setX(0);
+            imageView.setY(0);
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setContent(imageView);
+            scrollPane.setFitToHeight(true);
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            Scene scene = new Scene(scrollPane , Util.min(screenBounds.getWidth() , image.getWidth() + 10) , Util.min(screenBounds.getHeight() - 50 , image.getHeight() + 10)  );
             Stage newWindow = new Stage();
-            newWindow.setTitle("Graphiz tree");
+            newWindow.setTitle("generated syntax tree");
             newWindow.setScene(scene);
             newWindow.show();
         }catch(ParsingException e){
